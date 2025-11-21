@@ -1,0 +1,35 @@
+{% extends "notes/base.html" %}
+
+{% block content %}
+
+<!-- Arama -->
+<div class="w-full flex justify-center mb-8">
+    <div class="bg-[#004070] text-white px-6 py-3 rounded-full w-full md:w-3/4 flex items-center gap-3 shadow-md">
+        <span>🔍</span>
+        <input 
+            type="text" 
+            placeholder="Fakülteni Bul..." 
+            class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50"
+        >
+    </div>
+</div>
+
+<h1 class="text-3xl md:text-4xl font-extrabold text-[#004070] text-center mb-8">
+    MARMARA NOT – Fakülteler
+</h1>
+
+<!-- Fakülte/Bölüm baloncukları -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
+    {% for dept in departments %}
+        <a href="{% url 'department_detail' dept.slug %}"
+           class="px-8 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold shadow hover:bg-[#00325a]">
+            {{ dept.name }}
+        </a>
+    {% empty %}
+        <p class="text-slate-500 col-span-full text-center">
+            Henüz fakülte eklenmemiş.
+        </p>
+    {% endfor %}
+</div>
+
+{% endblock %}

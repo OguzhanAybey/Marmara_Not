@@ -1,0 +1,75 @@
+{% extends "notes/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Arama barı -->
+<div class="w-full flex justify-center mb-8 mt-4">
+    <div class="bg-[#004070] text-white px-6 py-3 rounded-full w-full md:w-3/4 flex items-center gap-3 shadow-md">
+        <span>🔍</span>
+        <input
+            type="text"
+            placeholder="Ders adı, fakülte veya hoca ismi yaz…"
+            class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50"
+        >
+    </div>
+</div>
+
+<div class="flex gap-6">
+
+    <!-- Sol taraftaki fakülte kısayolları -->
+    <div class="hidden md:flex flex-col gap-3 justify-center mr-4">
+        {% for dept in departments|slice:":10" %}
+            <a href="{% url 'department_detail' dept.slug %}"
+             class="px-4 py-2 rounded-full bg-[#004070] text-white font-medium shadow hover:bg-[#00325a] text-sm transition">
+              {{ dept.name }}
+            </a>
+        {% empty %}
+            <span class="text-xs text-slate-400">Henüz fakülte eklenmemiş.</span>
+        {% endfor %}
+    </div>
+
+
+    <!-- Sağ taraf ana içerik -->
+    <div class="flex-1">
+
+        <!-- Başlık -->
+        <h1 class="text-3xl md:text-4xl font-extrabold text-[#004070] mb-6">
+            MARMARA NOT – Tüm Dersler Tek Platformda
+        </h1>
+
+        <!-- Ortadaki Büyük Resim -->
+        <div class="w-full mb-8">
+            <div class="w-full h-[350px] md:h-[450px] overflow-hidden rounded-xl shadow-lg">
+                <img src="{% static 'orta_foto.jpg' %}"
+                     class="w-full h-full object-cover"
+                     alt="Kampüs Fotoğrafı">
+            </div>
+        </div>
+
+        <!-- Alt açıklama -->
+        <p class="text-base md:text-lg text-slate-800 mb-6 text-center md:text-middle">
+            Ders notlarını paylaş, topluluğa katkıda bulun.
+        </p>
+
+        <!-- Alt Butonlar -->
+        <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-8">
+
+            <!-- Fakülte sayfasına yönlendirme -->
+            <a href="{% url 'department_list' %}"
+               class="flex-1 text-center px-10 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold hover:bg-[#00325a] shadow-md transition">
+                Fakültelere Git
+            </a>
+
+            <!-- Dersler sayfası (şimdilik home’a bağlı) -->
+            <a href="{% url 'home' %}"
+               class="flex-1 text-center px-10 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold hover:bg-[#00325a] shadow-md transition">
+                Derslere Git
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

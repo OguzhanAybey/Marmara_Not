@@ -1,0 +1,45 @@
+{% extends "notes/base.html" %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-2">Not Yükle</h2>
+<p class="text-sm text-slate-400 mb-6">
+    Lütfen sadece kendi hazırladığın notları, özetleri veya çözümleri yükle. Admin onayından geçtikten sonra yayınlanacaktır.
+</p>
+
+<form method="post" enctype="multipart/form-data"
+      class="space-y-4 max-w-lg rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    <div class="space-y-1">
+        <label class="text-sm text-slate-200">Ders</label>
+        {{ form.course }}
+        {{ form.course.errors }}
+    </div>
+
+    <div class="space-y-1">
+        <label class="text-sm text-slate-200">Başlık</label>
+        {{ form.title }}
+        {{ form.title.errors }}
+    </div>
+
+    <div class="space-y-1">
+        <label class="text-sm text-slate-200">Açıklama (opsiyonel)</label>
+        {{ form.description }}
+        {{ form.description.errors }}
+    </div>
+
+    <div class="space-y-1">
+        <label class="text-sm text-slate-200">Dosya</label>
+        {{ form.file }}
+        {{ form.file.errors }}
+        <p class="text-xs text-slate-500">PDF, PPT, DOCX veya görsel dosyalar yükleyebilirsin.</p>
+    </div>
+
+    <button type="submit"
+            class="mt-2 inline-flex items-center justify-center rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-400">
+        Admin Onayına Gönder
+    </button>
+</form>
+{% endblock %}

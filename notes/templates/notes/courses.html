@@ -1,0 +1,40 @@
+{% extends "notes/base.html" %}
+
+{% block content %}
+
+<!-- Arama Çubuğu -->
+<div class="w-full flex justify-center mb-8 mt-4">
+    <div class="bg-[#004070] text-white px-6 py-3 rounded-full w-full md:w-2/3 flex items-center gap-3 shadow-md">
+        <span>🔍</span>
+        <input
+            type="text"
+            placeholder="Ders adı ara..."
+            class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50"
+        >
+    </div>
+</div>
+
+<!-- Başlık -->
+<h1 class="text-3xl md:text-4xl font-extrabold text-[#004070] text-center mb-8">
+    MARMARA NOT – Dersler
+</h1>
+
+<!-- Ders Baloncukları -->
+<div class="flex justify-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+
+        {% for course in courses %}
+            <a href="{% url 'course_detail' course.department.slug course.slug %}"
+               class="px-8 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold text-center shadow hover:bg-[#00325a] transition">
+                {{ course.name }}
+            </a>
+        {% empty %}
+            <p class="text-slate-500 col-span-full text-center">
+                Henüz ders eklenmemiş.
+            </p>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

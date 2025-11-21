@@ -1,0 +1,37 @@
+{% extends "notes/base.html" %}
+
+{% block content %}
+<div class="mb-4 flex items-center justify-between">
+    <div>
+        <a href="{% url 'department_detail' department.slug %}"
+           class="text-xs text-slate-400 hover:text-slate-200">&larr; {{ department.name }}</a>
+        <h2 class="text-2xl font-bold mt-1">{{ course.name }}</h2>
+    </div>
+</div>
+
+<h3 class="text-lg font-semibold mb-3">Onaylanmış Notlar</h3>
+
+{% if notes %}
+    <div class="space-y-3">
+        {% for note in notes %}
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <p class="font-semibold text-slate-100">{{ note.title }}</p>
+                    <p class="text-xs text-slate-400 mt-1">
+                        Yükleyen:
+                        {% if note.uploader %}
+                            <span class="font-medium text-indigo-300">{{ note.uploader.username }}</span>
+                        {% else %}
+                            <span class="italic text-slate-500">Anonim</span>
+                        {% endif %}
+                        · {{ note.created_at|date:"d.m.Y H:i" }}
+                    </p>
+                    {% if note.description %}
+                        <p class="text-sm text-slate-300 mt-2">
+                            {{ note.description }}
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="flex-shrink-0">
+                    <a href="{{ note.file.url }}" target="_blank"
+                       class="inline-flex items-center gap-2 rounded-full bg-indigo-500
