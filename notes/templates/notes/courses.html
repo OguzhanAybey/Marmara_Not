@@ -6,11 +6,8 @@
 <div class="w-full flex justify-center mb-8 mt-4">
     <div class="bg-[#004070] text-white px-6 py-3 rounded-full w-full md:w-2/3 flex items-center gap-3 shadow-md">
         <span>🔍</span>
-        <input
-            type="text"
-            placeholder="Ders adı ara..."
-            class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50"
-        >
+        <input type="text" id="searchInput" placeholder="Ders adı ara..."
+            class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50">
     </div>
 </div>
 
@@ -21,20 +18,36 @@
 
 <!-- Ders Baloncukları -->
 <div class="flex justify-center">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="courseList">
 
         {% for course in courses %}
-            <a href="{% url 'course_detail' course.department.slug course.slug %}"
-               class="px-8 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold text-center shadow hover:bg-[#00325a] transition">
-                {{ course.name }}
-            </a>
+        <a href="{% url 'course_detail' course.department.slug course.slug %}"
+            class="course-item px-8 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold text-center shadow hover:bg-[#00325a] transition flex items-center justify-center">
+            {{ course.name }}
+        </a>
         {% empty %}
-            <p class="text-slate-500 col-span-full text-center">
-                Henüz ders eklenmemiş.
-            </p>
+        <p class="text-slate-500 col-span-full text-center">
+            Henüz ders eklenmemiş.
+        </p>
         {% endfor %}
 
     </div>
 </div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const filter = this.value.toLowerCase();
+        const items = document.querySelectorAll('.course-item');
+
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(filter)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+</script>
 
 {% endblock %}

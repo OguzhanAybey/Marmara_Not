@@ -23,4 +23,7 @@ urlpatterns = [
 
     # Not yükleme
     path('not-yukle/', views.upload_note, name='upload_note'),
+
+    # Kullanıcı Notları
+    path('notlarim/', views.my_notes, name='my_notes'),
 ]

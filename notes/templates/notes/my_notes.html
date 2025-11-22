@@ -1,0 +1,64 @@
+{% extends "notes/base.html" %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-[#004070] mb-8 text-center">Notlarım</h1>
+
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        {% if notes %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-100 text-slate-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6">Ders</th>
+                        <th class="py-3 px-6">Başlık</th>
+                        <th class="py-3 px-6">Tarih</th>
+                        <th class="py-3 px-6 text-center">Durum</th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-700 text-sm">
+                    {% for note in notes %}
+                    <tr class="border-b border-slate-200 hover:bg-slate-50 transition">
+                        <td class="py-3 px-6 font-medium">
+                            {{ note.course.name }}
+                        </td>
+                        <td class="py-3 px-6">
+                            {{ note.title }}
+                        </td>
+                        <td class="py-3 px-6">
+                            {{ note.created_at|date:"d M Y" }}
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            {% if note.status == 'approved' %}
+                            <span class="bg-green-100 text-green-700 py-1 px-3 rounded-full text-xs font-bold">
+                                Onaylandı
+                            </span>
+                            {% elif note.status == 'rejected' %}
+                            <span class="bg-red-100 text-red-700 py-1 px-3 rounded-full text-xs font-bold">
+                                Reddedildi
+                            </span>
+                            {% else %}
+                            <span class="bg-yellow-100 text-yellow-700 py-1 px-3 rounded-full text-xs font-bold">
+                                Onay Bekliyor
+                            </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-8 text-center text-slate-500">
+            <p class="text-lg mb-4">Henüz hiç not yüklemediniz.</p>
+            <a href="{% url 'upload_note' %}"
+                class="inline-block bg-[#004070] text-white px-6 py-2 rounded-full font-semibold hover:bg-[#00325a] transition">
+                İlk Notunu Yükle
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

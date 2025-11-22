@@ -72,3 +72,12 @@ def upload_note(request):
     return render(request, "notes/upload_note.html", {
         "form": form,
     })
+
+
+# KULLANICI NOTLARI – Kullanıcının yüklediği notlar
+@login_required
+def my_notes(request):
+    notes = Note.objects.filter(uploader=request.user).order_by("-created_at")
+    return render(request, "notes/my_notes.html", {
+        "notes": notes,
+    })
