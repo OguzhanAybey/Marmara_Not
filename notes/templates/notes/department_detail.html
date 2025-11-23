@@ -2,47 +2,58 @@
 
 {% block content %}
 
-<!-- Arama -->
-<div class="w-full flex justify-center mb-8">
-    <div class="bg-[#004070] text-white px-6 py-3 rounded-full w-full md:w-3/4 flex items-center gap-3 shadow-md">
-        <span>🔍</span>
-        <input type="text" id="searchInput" placeholder="Ders Ara..."
-            class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50">
+<div class="max-w-5xl mx-auto mt-8">
+
+    <!-- Başlık ve Açıklama -->
+    <div class="mb-10">
+        <h1 class="text-4xl font-extrabold text-slate-900 mb-2">{{ department.name }}</h1>
+        <p class="text-[#004070] font-medium text-sm mb-6">Marmara Üniversitesi</p>
+
+        <p class="text-slate-600 leading-relaxed max-w-4xl">
+            {{ department.name }} Bölümü, öğrencilerine teorik ve pratik bilgiyi harmanlayarak sunan,
+            sektörün ve akademinin ihtiyaçlarına yönelik yetkin bireyler yetiştirmeyi hedefleyen köklü bir birimdir.
+            Aşağıda bu bölüme ait derslerin listesini ve ilgili ders notlarını bulabilirsiniz.
+        </p>
     </div>
+
+    <!-- Dersler Başlığı -->
+    <h2 class="text-2xl font-bold text-slate-900 mb-6">Dersler</h2>
+
+    <!-- Ders Listesi Tablosu -->
+    <div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+        <div class="grid grid-cols-12 bg-slate-50 border-b border-slate-200 py-4 px-6 text-sm font-bold text-slate-900">
+            <div class="col-span-3 md:col-span-2">Ders Kodu</div>
+            <div class="col-span-6 md:col-span-8">Ders Adı</div>
+            <div class="col-span-3 md:col-span-2 text-right">Ders Notları</div>
+        </div>
+
+        <div class="divide-y divide-slate-100">
+            {% for course in courses %}
+            <div class="grid grid-cols-12 py-5 px-6 items-center hover:bg-slate-50 transition duration-150">
+                <div class="col-span-3 md:col-span-2 text-[#004070] font-medium text-sm">
+                    {{ course.code }}
+                </div>
+                <div class="col-span-6 md:col-span-8 text-slate-800 font-medium text-sm">
+                    {{ course.name }}
+                </div>
+                <div class="col-span-3 md:col-span-2 text-right">
+                    <a href="{% url 'course_detail' department.faculty.slug department.slug course.code %}"
+                        class="text-[#004070] font-bold text-sm hover:underline">
+                        Görüntüle
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="p-8 text-center text-slate-500">
+                Bu bölüme ait henüz ders eklenmemiş.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
 </div>
 
-<h1 class="text-3xl md:text-4xl font-extrabold text-[#004070] text-center mb-8">
-    {{ department.name }} – Dersler
-</h1>
-
-<!-- Ders baloncukları -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center" id="courseList">
-    {% for course in courses %}
-    <a href="{% url 'course_detail' department.slug course.slug %}"
-        class="course-item px-8 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold shadow hover:bg-[#00325a] text-center w-full flex items-center justify-center min-h-[80px]">
-        {{ course.name }}
-    </a>
-    {% empty %}
-    <p class="text-slate-500 col-span-full text-center">
-        Bu bölümde henüz ders eklenmemiş.
-    </p>
-    {% endfor %}
-</div>
-
-<script>
-    document.getElementById('searchInput').addEventListener('keyup', function () {
-        const filter = this.value.toLowerCase();
-        const courses = document.querySelectorAll('.course-item');
-
-        courses.forEach(course => {
-            const text = course.textContent.toLowerCase();
-            if (text.includes(filter)) {
-                course.style.display = 'flex';
-            } else {
-                course.style.display = 'none';
-            }
-        });
-    });
-</script>
+<!-- Pagination -->
+{% include 'notes/includes/pagination.html' %}
 
 {% endblock %}

@@ -1,0 +1,52 @@
+{% if page_obj.has_other_pages %}
+<div class="flex items-center justify-center gap-2 mt-8">
+
+    <!-- Previous Button -->
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}"
+        class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    {% else %}
+    <span class="px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-400 cursor-not-allowed">
+        <i class="fas fa-chevron-left"></i>
+    </span>
+    {% endif %}
+
+    <!-- Page Numbers -->
+    <div class="flex gap-1">
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <!-- Current Page -->
+        <span class="px-4 py-2 bg-[#004070] text-white rounded-lg font-semibold">
+            {{ num }}
+        </span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <!-- Nearby Pages -->
+            <a href="?page={{ num }}"
+                class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition">
+                {{ num }}
+            </a>
+            {% endif %}
+            {% endfor %}
+    </div>
+
+    <!-- Next Button -->
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}"
+        class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition">
+        <i class="fas fa-chevron-right"></i>
+    </a>
+    {% else %}
+    <span class="px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-400 cursor-not-allowed">
+        <i class="fas fa-chevron-right"></i>
+    </span>
+    {% endif %}
+
+</div>
+
+<!-- Page Info -->
+<div class="text-center mt-4 text-sm text-slate-500">
+    Sayfa {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+    (Toplam {{ page_obj.paginator.count }} sonuç)
+</div>
+{% endif %}

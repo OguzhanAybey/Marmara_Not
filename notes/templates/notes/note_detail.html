@@ -1,0 +1,66 @@
+{% extends "notes/base.html" %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto mt-8 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+
+    <div class="p-8 md:p-10">
+
+        <!-- Üst Bilgi (Bölüm Adı) -->
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            {{ note.course.department.name }}
+        </div>
+
+        <!-- Başlık -->
+        <h1 class="text-3xl md:text-4xl font-extrabold text-[#004070] mb-6">
+            {{ note.title }}
+        </h1>
+
+        <!-- Metadata (Yükleyen, Tarih) -->
+        <div class="flex items-center gap-6 text-sm text-slate-500 mb-8 border-b border-slate-100 pb-8">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-user text-slate-400"></i>
+                <span>Yükleyen:
+                    <span class="font-medium text-slate-700">
+                        {% if note.uploader %}{{ note.uploader.username }}{% else %}Anonim{% endif %}
+                    </span>
+                </span>
+            </div>
+            <div class="flex items-center gap-2">
+                <i class="far fa-calendar-alt text-slate-400"></i>
+                <span>Tarih: <span class="font-medium text-slate-700">{{ note.created_at|date:"d F Y" }}</span></span>
+            </div>
+        </div>
+
+        <!-- İçerik Başlığı -->
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4">NOT İÇERİĞİ</h2>
+
+        <!-- Açıklama Metni -->
+        <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed mb-10">
+            {% if note.description %}
+            {{ note.description|linebreaks }}
+            {% else %}
+            <p class="italic text-slate-400">Bu not için açıklama girilmemiş.</p>
+            {% endif %}
+        </div>
+
+        <!-- Aksiyon Butonları -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <a href="{{ note.file.url }}" download
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#004070] text-white font-bold rounded-lg hover:bg-[#00325a] transition shadow-md">
+                <i class="fas fa-download"></i>
+                Notu İndir (.pdf)
+            </a>
+
+            <a href="{{ note.file.url }}" target="_blank"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 font-bold rounded-lg hover:bg-slate-200 transition">
+                <i class="fas fa-expand"></i>
+                Tam Ekran Görüntüle
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

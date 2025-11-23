@@ -1,0 +1,127 @@
+{% extends "notes/base.html" %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto mt-8">
+
+    <!-- Arama Başlığı -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-[#004070] mb-2">Arama Sonuçları</h1>
+        {% if query %}
+        <p class="text-slate-600">
+            "<span class="font-semibold">{{ query }}</span>" için
+            <span class="text-[#004070] font-bold">{{ total_results }}</span> sonuç bulundu
+        </p>
+        {% else %}
+        <p class="text-slate-500">Lütfen bir arama terimi girin.</p>
+        {% endif %}
+    </div>
+
+    <!-- Arama Barı -->
+    <div class="mb-12">
+        <form method="GET" action="{% url 'search' %}" class="w-full">
+            <div class="bg-[#004070] text-white px-6 py-4 rounded-full flex items-center gap-4 shadow-lg">
+                <i class="fas fa-search text-xl"></i>
+                <input type="text" name="q" value="{{ query }}" placeholder="Ders adı, fakülte veya bölüm ara..."
+                    class="bg-transparent focus:outline-none w-full placeholder-blue-200 text-white text-lg" autofocus>
+                <button type="submit"
+                    class="px-6 py-2 bg-white text-[#004070] rounded-full font-bold hover:bg-blue-50 transition">
+                    Ara
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if query %}
+    {% if total_results > 0 %}
+
+    <!-- Fakülteler -->
+    {% if faculties %}
+    <div class="mb-10">
+        <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-university text-[#004070]"></i>
+            Fakülteler
+            <span class="text-sm font-normal text-slate-500">({{ faculties|length }})</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for faculty in faculties %}
+            <a href="{% url 'faculty_detail' faculty.slug %}"
+                class="p-4 bg-white border border-slate-200 rounded-lg hover:shadow-md hover:border-[#004070] transition">
+                <h3 class="font-bold text-lg text-slate-800">{{ faculty.name }}</h3>
+                <p class="text-sm text-slate-500 mt-1">
+                    {{ faculty.departments.count }} bölüm
+                </p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Bölümler -->
+    {% if departments %}
+    <div class="mb-10">
+        <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-building text-[#004070]"></i>
+            Bölümler
+            <span class="text-sm font-normal text-slate-500">({{ departments|length }})</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for department in departments %}
+            <a href="{% url 'department_detail' department.slug %}"
+                class="p-4 bg-white border border-slate-200 rounded-lg hover:shadow-md hover:border-[#004070] transition">
+                <h3 class="font-bold text-slate-800">{{ department.name }}</h3>
+                <p class="text-sm text-slate-500 mt-1">
+                    {{ department.faculty.name }}
+                </p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Dersler -->
+    {% if courses %}
+    <div class="mb-10">
+        <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-book text-[#004070]"></i>
+            Dersler
+            <span class="text-sm font-normal text-slate-500">({{ courses|length }})</span>
+        </h2>
+        <div class="grid grid-cols-1 gap-3">
+            {% for course in courses %}
+            <a href="{% url 'course_detail' course.department.faculty.slug course.department.slug course.code %}"
+                class="p-4 bg-white border border-slate-200 rounded-lg hover:shadow-md hover:border-[#004070] transition flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-slate-800">{{ course.name }}</h3>
+                    <p class="text-sm text-slate-500 mt-1">
+                        {{ course.department.name }}
+                        · <span class="text-[#004070] font-medium">{{ course.code }}</span>
+                    </p>
+                </div>
+                <i class="fas fa-chevron-right text-slate-400"></i>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <!-- Sonuç Bulunamadı -->
+    <div class="text-center py-16 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+            <i class="fas fa-search text-2xl"></i>
+        </div>
+        <h3 class="text-lg font-semibold text-slate-700">Sonuç Bulunamadı</h3>
+        <p class="text-slate-500 text-sm mt-1">
+            "{{ query }}" için herhangi bir sonuç bulunamadı.
+        </p>
+        <p class="text-slate-400 text-xs mt-2">
+            Farklı anahtar kelimeler deneyebilirsiniz.
+        </p>
+    </div>
+    {% endif %}
+    {% endif %}
+
+</div>
+
+{% endblock %}

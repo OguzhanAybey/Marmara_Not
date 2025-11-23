@@ -1,37 +1,90 @@
 {% extends "notes/base.html" %}
 
-{% block content %}
-<div class="mb-4 flex items-center justify-between">
-    <div>
-        <a href="{% url 'department_detail' department.slug %}"
-           class="text-xs text-slate-400 hover:text-slate-200">&larr; {{ department.name }}</a>
-        <h2 class="text-2xl font-bold mt-1">{{ course.name }}</h2>
+{% block full_width_header %}
+<div class="w-full bg-gradient-to-r from-[#004070] to-[#2b7de9] text-white py-12">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center gap-2 text-blue-200 text-sm mb-2">
+            <a href="{% url 'department_detail' department.slug %}" class="hover:text-white transition">
+                <i class="fas fa-arrow-left"></i> {{ department.name }}
+            </a>
+        </div>
+        <h1 class="text-3xl font-bold">{{ course.name }}</h1>
+        <p class="text-blue-100 mt-1">{{ course.code }}</p>
     </div>
 </div>
+{% endblock %}
 
-<h3 class="text-lg font-semibold mb-3">Onaylanmış Notlar</h3>
+{% block content %}
 
-{% if notes %}
-    <div class="space-y-3">
+<div class="mt-4">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-[#004070]">Onaylanmış Notlar</h2>
+        <span class="text-sm text-slate-500">{{ page_obj.paginator.count }} not bulundu</span>
+    </div>
+
+    {% if notes %}
+    <div class="grid grid-cols-1 gap-4">
         {% for note in notes %}
-            <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                    <p class="font-semibold text-slate-100">{{ note.title }}</p>
-                    <p class="text-xs text-slate-400 mt-1">
-                        Yükleyen:
-                        {% if note.uploader %}
-                            <span class="font-medium text-indigo-300">{{ note.uploader.username }}</span>
-                        {% else %}
-                            <span class="italic text-slate-500">Anonim</span>
-                        {% endif %}
-                        · {{ note.created_at|date:"d.m.Y H:i" }}
-                    </p>
-                    {% if note.description %}
-                        <p class="text-sm text-slate-300 mt-2">
-                            {{ note.description }}
-                        </p>
-                    {% endif %}
+        <div
+            class="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-md transition flex flex-col md:flex-row justify-between gap-4">
+
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-[#004070]">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800">{{ note.title }}</h3>
                 </div>
-                <div class="flex-shrink-0">
-                    <a href="{{ note.file.url }}" target="_blank"
-                       class="inline-flex items-center gap-2 rounded-full bg-indigo-500
+
+                {% if note.description %}
+                <p class="text-slate-600 text-sm mb-3 pl-11">
+                    {{ note.description }}
+                </p>
+                {% endif %}
+
+                <div class="flex items-center gap-4 text-xs text-slate-400 pl-11">
+                    <span class="flex items-center gap-1">
+                        <i class="fas fa-user"></i>
+                        {% if note.uploader %}
+                        {{ note.uploader.username }}
+                        {% else %}
+                        Anonim
+                        {% endif %}
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <i class="far fa-clock"></i>
+                        {{ note.created_at|date:"d.m.Y" }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-center">
+                <a href="{% url 'note_detail' note.id %}"
+                    class="px-6 py-2 bg-[#004070] text-white rounded-lg font-semibold hover:bg-[#00325a] transition flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-eye"></i>
+                    İncele
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-16 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+            <i class="far fa-folder-open text-2xl"></i>
+        </div>
+        <h3 class="text-lg font-semibold text-slate-700">Henüz Not Eklenmemiş</h3>
+        <p class="text-slate-500 text-sm mt-1">Bu ders için henüz onaylanmış bir not bulunmuyor.</p>
+        <a href="{% url 'upload_note' %}" class="inline-block mt-4 text-[#004070] font-medium hover:underline">
+            İlk notu sen yükle &rarr;
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Pagination -->
+{% include 'notes/includes/pagination.html' %}
+
+{% endblock %}

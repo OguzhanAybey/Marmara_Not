@@ -11,15 +11,20 @@ urlpatterns = [
     # DERSLER listesi (tüm ders baloncukları)
     path('dersler/', views.course_list, name='course_list'),
 
+    # Fakülte Detay (Fakülteye tıklayınca bölümlerin listesi görünür)
+    path('fakulte/<slug:slug>/', views.faculty_detail, name='faculty_detail'),
+
     # Bölüm detay (bölüme tıklayınca derslerin listesi görünür)
     path('bolum/<slug:slug>/', views.department_detail, name='department_detail'),
 
-    # Ders detay (seçilen ders -> notlar listesi)
-    path(
-        'bolum/<slug:dept_slug>/ders/<slug:course_slug>/',
-        views.course_detail,
-        name='course_detail'
-    ),
+    # Ders detay sayfası (faculty + department + course code ile)
+    path('ders/<slug:faculty_slug>/<slug:dept_slug>/<str:course_code>/', views.course_detail, name='course_detail'),
+
+    # Not Detay Sayfası
+    path('not/<int:note_id>/', views.note_detail, name='note_detail'),
+
+    # Arama
+    path('arama/', views.search, name='search'),
 
     # Not yükleme
     path('not-yukle/', views.upload_note, name='upload_note'),

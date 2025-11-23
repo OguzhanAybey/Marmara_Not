@@ -5,14 +5,15 @@
 
 <!-- Arama barı -->
 <div class="w-full flex justify-center mb-8 mt-4">
-    <div class="bg-[#004070] text-white px-6 py-3 rounded-full w-full md:w-3/4 flex items-center gap-3 shadow-md">
-        <span>🔍</span>
-        <input
-            type="text"
-            placeholder="Ders adı, fakülte veya hoca ismi yaz…"
-            class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50"
-        >
-    </div>
+    <form method="GET" action="{% url 'search' %}" class="w-full md:w-3/4">
+        <div class="bg-[#004070] text-white px-6 py-3 rounded-full flex items-center gap-3 shadow-md">
+            <button type="submit" class="text-white hover:text-blue-200 transition">
+                <span>🔍</span>
+            </button>
+            <input type="text" name="q" placeholder="Ders adı, fakülte veya hoca ismi yaz…"
+                class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50">
+        </div>
+    </form>
 </div>
 
 <div class="flex gap-6">
@@ -20,12 +21,12 @@
     <!-- Sol taraftaki fakülte kısayolları -->
     <div class="hidden md:flex flex-col gap-3 justify-center mr-4">
         {% for dept in departments|slice:":10" %}
-            <a href="{% url 'department_detail' dept.slug %}"
-             class="px-4 py-2 rounded-full bg-[#004070] text-white font-medium shadow hover:bg-[#00325a] text-sm transition">
-              {{ dept.name }}
-            </a>
+        <a href="{% url 'department_detail' dept.slug %}"
+            class="px-4 py-2 rounded-full bg-[#004070] text-white font-medium shadow hover:bg-[#00325a] text-sm transition">
+            {{ dept.name }}
+        </a>
         {% empty %}
-            <span class="text-xs text-slate-400">Henüz fakülte eklenmemiş.</span>
+        <span class="text-xs text-slate-400">Henüz fakülte eklenmemiş.</span>
         {% endfor %}
     </div>
 
@@ -41,9 +42,7 @@
         <!-- Ortadaki Büyük Resim -->
         <div class="w-full mb-8">
             <div class="w-full h-[350px] md:h-[450px] overflow-hidden rounded-xl shadow-lg">
-                <img src="{% static 'orta_foto.jpg' %}"
-                     class="w-full h-full object-cover"
-                     alt="Kampüs Fotoğrafı">
+                <img src="{% static 'orta_foto.jpg' %}" class="w-full h-full object-cover" alt="Kampüs Fotoğrafı">
             </div>
         </div>
 
@@ -57,13 +56,13 @@
 
             <!-- Fakülte sayfasına yönlendirme -->
             <a href="{% url 'department_list' %}"
-               class="flex-1 text-center px-10 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold hover:bg-[#00325a] shadow-md transition">
+                class="flex-1 text-center px-10 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold hover:bg-[#00325a] shadow-md transition">
                 Fakültelere Git
             </a>
 
-            <!-- Dersler sayfası (şimdilik home’a bağlı) -->
+            <!-- Dersler sayfası (şimdilik home'a bağlı) -->
             <a href="{% url 'home' %}"
-               class="flex-1 text-center px-10 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold hover:bg-[#00325a] shadow-md transition">
+                class="flex-1 text-center px-10 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold hover:bg-[#00325a] shadow-md transition">
                 Derslere Git
             </a>
 

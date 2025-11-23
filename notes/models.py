@@ -53,7 +53,10 @@ class Course(models.Model):
         verbose_name_plural = "Dersler"
 
     def __str__(self):
-        if self.code:
+        dept_name = self.department.name if self.department else ""
+        if self.code and dept_name:
+            return f"{self.code} - {self.name} ({dept_name})"
+        elif self.code:
             return f"{self.code} - {self.name}"
         return self.name
 

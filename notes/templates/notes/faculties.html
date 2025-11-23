@@ -2,35 +2,50 @@
 
 {% block content %}
 
-<!-- Arama çubuğu -->
-<div class="w-full flex justify-center mb-8 mt-4">
-    <div class="bg-[#004070] text-white px-6 py-3 rounded-full w-full md:w-2/3 flex items-center gap-3 shadow-md">
-        <span>🔍</span>
-        <input type="text" id="searchInput" placeholder="Fakülteni Bul..."
-            class="bg-transparent focus:outline-none w-full placeholder-blue-100 text-blue-50">
-    </div>
-</div>
-
 <!-- Başlık -->
 <h1 class="text-3xl md:text-4xl font-extrabold text-[#004070] text-center mb-8">
     MARMARA NOT – Fakülteler
 </h1>
 
-<!-- Fakülte baloncukları -->
-<div class="flex justify-center">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="facultyList">
+<!-- Kart Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        {% for dept in departments %}
-        <a href="{% url 'department_detail' dept.slug %}"
-            class="faculty-item px-8 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold text-center shadow hover:bg-[#00325a] flex items-center justify-center">
-            {{ dept.name }}
-        </a>
-        {% empty %}
-        <p class="text-slate-500 col-span-full text-center">
-            Henüz fakülte eklenmemiş.
-        </p>
-        {% endfor %}
+    {% for faculty in faculties %}
+    <!-- Kart -->
+    <a href="{% url 'faculty_detail' faculty.slug %}"
+        class="faculty-item group relative bg-[#004070] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between min-h-[160px]">
 
+        <!-- Üst Kısım: İsim ve İkon -->
+        <div class="flex justify-between items-start mb-4">
+            <h2 class="text-xl font-bold text-white w-2/3 leading-tight">
+                {{ faculty.name }}
+            </h2>
+            <div class="bg-white/20 p-3 rounded-full group-hover:bg-white/30 transition-colors">
+                <i class="fa-solid {{ faculty.icon }} text-2xl text-white"></i>
+            </div>
+        </div>
+
+        <!-- Alt Kısım: Açıklama (Beyaz Şerit) -->
+        <div class="absolute bottom-0 left-0 w-full bg-white py-3 px-6">
+            <p class="text-[#004070] text-sm font-medium">
+                {{ faculty.name|slice:":15" }}... Notları
+            </p>
+        </div>
+    </a>
+    {% empty %}
+    <p class="text-slate-500 col-span-full text-center">
+        Henüz fakülte eklenmemiş.
+    </p>
+    {% endfor %}
+
+</div>
+
+<!-- Arama Çubuğu (Alt Kısım) -->
+<div class="w-full flex justify-center mt-12">
+    <div class="bg-[#004070] text-white px-6 py-4 rounded-full w-full md:w-2/3 flex items-center gap-3 shadow-lg">
+        <span class="text-xl">🔍</span>
+        <input type="text" id="searchInput" placeholder="Fakülteleri Bul..."
+            class="bg-transparent focus:outline-none w-full placeholder-blue-200 text-white text-lg">
     </div>
 </div>
 
@@ -40,7 +55,7 @@
         const items = document.querySelectorAll('.faculty-item');
 
         items.forEach(item => {
-            const text = item.textContent.toLowerCase();
+            const text = item.querySelector('h2').textContent.toLowerCase();
             if (text.includes(filter)) {
                 item.style.display = 'flex';
             } else {

@@ -7,6 +7,7 @@
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body class="bg-white text-slate-900 min-h-screen flex flex-col">
@@ -65,8 +66,11 @@
         </div>
     </header>
 
+    <!-- █ FULL WIDTH HEADER BLOCK █ -->
+    {% block full_width_header %}{% endblock %}
+
     <!-- █ SAYFA İÇERİĞİ █ -->
-    <main class="max-w-6xl mx-auto px-4 py-8 flex-1">
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full">
         {% for message in messages %}
         <div class="mb-4 rounded-lg border border-emerald-500/40 bg-emerald-50 px-4 py-2 text-sm text-emerald-900">
             {{ message }}
