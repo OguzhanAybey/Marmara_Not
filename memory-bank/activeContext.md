@@ -1,16 +1,22 @@
 # Active Context
 
 ## Current Focus
-The project is in an active development state. The core structure (Faculties, Departments, Courses, Notes) is implemented. The immediate focus is on establishing documentation (Memory Bank) to facilitate further development.
+**Version: v1.2.0** - The project has completed major URL restructuring and model improvements. Current focus is on implementing user-facing features from the roadmap.
 
-## Recent Changes
--   **Memory Bank Creation**: Initialized the `memory-bank` directory and core documentation files.
--   **Codebase Analysis**: Reviewed `models.py`, `views.py`, `urls.py`, and `settings.py` to understand the current state.
+## Recent Changes (v1.2.0)
+-   **URL System Refactor**: Implemented short, meaningful URLs (`/ders/faculty-slug/department-slug/COURSE_CODE/`)
+-   **Model Improvements**: 
+    -   Removed unique constraint from Course slug to allow same code across departments
+    -   Added department context to course display (e.g., "MATH101 - Calculus 1 (Malzeme Mühendisliği)")
+-   **Admin Panel**: Added faculty column, advanced filtering, and bulk operations
+-   **Performance**: Fixed N+1 query problems and optimized database indexes
 
 ## Active Decisions
--   **Documentation First**: Prioritizing the creation of the Memory Bank to ensure future AI interactions have full context.
+-   **Faculty-Scoped Course Codes**: Same course code can exist in different departments
+-   **URL Structure**: Using hierarchical slugs for better SEO and UX
 
-## Next Steps
--   Complete the Memory Bank creation (`activeContext.md`, `progress.md`).
--   Verify the completeness of the documentation against the codebase.
--   (Potential) Review frontend templates to confirm UI library usage (Bootstrap etc.).
+## Next Steps (Roadmap)
+1.  **Mobil Responsive Menu**: Improve mobile navigation
+2.  **Kullanıcı Kayıt/Giriş**: Custom authentication pages
+3.  **İstatistikler**: Dashboard with statistics
+4.  **Değerlendirme Sistemi**: Rating system for notes

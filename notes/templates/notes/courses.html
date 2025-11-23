@@ -21,7 +21,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="courseList">
 
         {% for course in courses %}
-        <a href="{% url 'course_detail' course.department.slug course.slug %}"
+        <a href="{% url 'course_detail' course.department.faculty.slug course.department.slug course.code %}"
             class="course-item px-8 py-3 bg-[#004070] text-white rounded-full text-lg font-semibold text-center shadow hover:bg-[#00325a] transition flex items-center justify-center">
             {{ course.name }}
         </a>
