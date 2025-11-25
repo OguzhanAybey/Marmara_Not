@@ -31,4 +31,23 @@ urlpatterns = [
 
     # Kullanıcı Notları
     path('notlarim/', views.my_notes, name='my_notes'),
+    
+    # Authentication
+    path('giris/', views.login_view, name='login'),
+    path('kayit/', views.register_view, name='register'),
+    path('cikis/', views.logout_view, name='logout'),
+    
+    # Password Reset
+    path('sifre-sifirlama/', 
+         views.password_reset_request, 
+         name='password_reset'),
+    path('sifre-sifirlama/gonderildi/', 
+         views.password_reset_done, 
+         name='password_reset_done'),
+    path('sifre-sifirlama/<uidb64>/<token>/', 
+         views.password_reset_confirm, 
+         name='password_reset_confirm'),
+    path('sifre-sifirlama/tamamlandi/', 
+         views.password_reset_complete, 
+         name='password_reset_complete'),
 ]

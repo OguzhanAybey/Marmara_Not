@@ -1,23 +1,23 @@
-Marmara Not - v1.2.0
-İşte bugün yaptıklarımız:
+Marmara Not - v1.3.0
 
-✅ Bugün Tamamlananlar (v1.2.0)
-1. Ders Kodu URL Sistemi
-Kısa ve anlamlı URL'ler: /ders/muhendislik/malzeme-muhendisligi/MATH101/
-Aynı kod farklı bölümlerde kullanılabilir
-2. Model İyileştirmeleri
-Slug artık unique değil
-Bölüm bilgisi gösterimi: MATH101 - Calculus 1 (Malzeme Mühendisliği)
-3. Admin Panel
-Fakülte sütunu eklendi
-Gelişmiş filtreleme
-Toplu işlemler
-4. Performans
-N+1 query problemi çözüldü
-Index'ler optimize edildi
-📋 Sıradaki Görevler
-Mobil Responsive Menu
-Kullanıcı Kayıt/Giriş
-İstatistikler
-Değerlendirme Sistemi
-Mevcut Versiyon: v1.2.0 🚀
+✅ Tamamlanan Özellikler
+
+## v1.3.0 - Mobil Responsive Menu
+- ✅ Hamburger menü ile mobil navigasyon
+- ✅ Slide-in animasyonlu yan panel
+- ✅ Backdrop blur efekti
+- ✅ Kullanıcı durumu mobil menüde gösterimi
+
+## v1.2.0 - URL Sistemi ve Performans
+- ✅ Kısa ve anlamlı URL'ler: `/ders/muhendislik/malzeme-muhendisligi/MATH101/`
+- ✅ Aynı kod farklı bölümlerde kullanılabilir
+- ✅ Admin panel iyileştirmeleri (fakülte sütunu, filtreleme, toplu işlemler)
+- ✅ N+1 query problemi çözüldü, index'ler optimize edildi
+
+📋 Sıradaki Görevler (v1.4.0)
+1. **Kullanıcı Kayıt/Giriş** - Custom authentication pages
+2. **İstatistikler** - Dashboard (not sayıları, popüler dersler)
+3. **Değerlendirme Sistemi** - Rating system for notes
+4. **Gelişmiş Arama** - Autocomplete ve filtreler
+
+Mevcut Versiyon: v1.3.0 🚀

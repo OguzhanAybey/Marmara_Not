@@ -185,3 +185,133 @@ def my_notes(request):
     return render(request, "notes/my_notes.html", {
         "notes": notes,
     })
+
+
+# ============ AUTHENTICATION VIEWS ============
+
+# GİRİŞ SAYFASI
+def login_view(request):
+    from django.contrib.auth import authenticate, login
+    
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Hoş geldin, {user.username}!')
+            
+            # Redirect to next page if exists, otherwise home
+            next_page = request.GET.get('next', 'home')
+            return redirect(next_page)
+        else:
+            messages.error(request, 'Kullanıcı adı veya şifre hatalı.')
+    
+    return render(request, 'notes/login.html')
+
+
+# KAYIT SAYFASI
+def register_view(request):
+    from django.contrib.auth.models import User
+    from django.contrib.auth import login
+    
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        
+        # Validation
+        if password1 != password2:
+            messages.error(request, 'Şifreler eşleşmiyor.')
+            return render(request, 'notes/register.html')
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Bu kullanıcı adı zaten kullanılıyor.')
+            return render(request, 'notes/register.html')
+        
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Bu e-posta adresi zaten kayıtlı.')
+            return render(request, 'notes/register.html')
+        
+        # Create user
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password1
+        )
+        
+        # Auto login after registration
+        login(request, user)
+        messages.success(request, f'Hoş geldin, {user.username}! Hesabın başarıyla oluşturuldu.')
+        return redirect('home')
+    
+    return render(request, 'notes/register.html')
+
+
+# ÇIKIŞ
+@login_required
+def logout_view(request):
+    from django.contrib.auth import logout
+    
+    logout(request)
+    messages.success(request, 'Başarıyla çıkış yaptınız.')
+    return redirect('home')
+
+
+# ============ PASSWORD RESET VIEWS ============
+
+from django.contrib.auth.views import (
+    PasswordResetView, 
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
+
+# ŞİFRE SIFIRLAMA İSTEĞİ
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'notes/password_reset.html'
+    email_template_name = 'registration/password_reset_email.txt'
+    subject_template_name = 'registration/password_reset_subject.txt'
+    success_url = '/sifre-sifirlama/gonderildi/'
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.')
+        return super().form_valid(form)
+
+password_reset_request = CustomPasswordResetView.as_view()
+
+
+# ŞİFRE SIFIRLAMA E-POSTA GÖNDERİLDİ
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'notes/password_reset_done.html'
+
+password_reset_done = CustomPasswordResetDoneView.as_view()
+
+
+# ŞİFRE SIFIRLAMA ONAY (Yeni şifre girişi)
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'notes/password_reset_confirm.html'
+    success_url = '/sifre-sifirlama/tamamlandi/'
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Şifreniz başarıyla değiştirildi!')
+        return super().form_valid(form)
+
+password_reset_confirm = CustomPasswordResetConfirmView.as_view()
+
+
+# ŞİFRE SIFIRLAMA TAMAMLANDI
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'notes/password_reset_complete.html'
+
+password_reset_complete = CustomPasswordResetCompleteView.as_view()
+
